@@ -12,18 +12,19 @@ namespace DHCPszimulacio
         static List<string> excluded = new List<string>();
         static Dictionary<string, string> dhcp = new Dictionary<string, string>();
         static Dictionary<string, string> reserved = new Dictionary<string, string>();
+        static List<string> commands = new List<string>();
 
 
-        static void BeolvasExcluded()
+        static void BeolvasList(List<string> l, string filename)//excluded.csv beolvasása.
         {
             try
             {
-                StreamReader file = new StreamReader("excluded.csv");
+                StreamReader file = new StreamReader(filename);
                 try//Ha sikerült beolvasni a fájlt, akkor megpróbálja végigvinni.
                 {
                     while (!file.EndOfStream)
                     {
-                        excluded.Add(file.ReadLine());
+                        l.Add(file.ReadLine());
                     }
                 }
                 catch (Exception exception)//Ha hiba van, akkor azt kiírja.
@@ -59,11 +60,11 @@ namespace DHCPszimulacio
         }
 
 
-        static void BeolvasDictionary(Dictionary<string, string> d, string filenev)
+        static void BeolvasDictionary(Dictionary<string, string> d, string filename)
         {
             try
             {
-                StreamReader file = new StreamReader("reserved.csv");
+                StreamReader file = new StreamReader(filename);
                 while (!file.EndOfStream)
                 {
                     string[] adatok = file.ReadLine().Split(';');
@@ -80,13 +81,23 @@ namespace DHCPszimulacio
 
         static void Main(string[] args)
         {
-            BeolvasExcluded();
-            //foreach (var ex in excluded)
-            //{
-            //    Console.WriteLine(ex);
-            //}
-            //Console.WriteLine("\nVége...");
-            //Console.WriteLine();
+            BeolvasList(excluded, "excluded.csv");
+            foreach (var ex in excluded)
+            {
+                Console.WriteLine(ex);
+            }
+            Console.WriteLine("\nVége...");
+            Console.WriteLine();
+
+
+            BeolvasList(commands, "test.csv");
+            foreach (var c in commands)
+            {
+                Console.WriteLine(c);
+            }
+            Console.WriteLine("\nVége...");
+            Console.WriteLine();
+
 
             BeolvasDictionary(dhcp, "dhcp.csv");
             foreach (var d in dhcp)
@@ -96,11 +107,14 @@ namespace DHCPszimulacio
             Console.WriteLine("\nVége...");
             Console.WriteLine();
 
+
             BeolvasDictionary(reserved, "reserved.csv");
             foreach (var rs in reserved)
             {
                 Console.WriteLine(rs);
             }
+            Console.WriteLine("\nVége...");
+            Console.WriteLine();
 
 
             Console.ReadKey();
