@@ -10,6 +10,7 @@ namespace DHCPszimulacio
     {
         static void Main(string[] args)
         {
+
         }
     }
 }
